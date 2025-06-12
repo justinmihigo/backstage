@@ -13,7 +13,7 @@ coverage
 
 # Dependencies
 node_modules/
-
+.env
 # Yarn files
 .pnp.*
 .yarn/*
