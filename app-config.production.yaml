@@ -30,6 +30,12 @@ backend:
 
 auth:
   providers:
+    development:
+          clientId: ${GITHUB_CLIENT_ID}
+          clientSecret: ${GITHUB_CLIENT_SECRET}
+          signIn:
+            resolvers:
+              - resolver: usernameMatchingUserEntityName
     guest: {}
 
 catalog:

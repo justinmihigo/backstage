@@ -7,8 +7,8 @@
   },
   "scripts": {
     "start": "dotenv -e .env -- backstage-cli repo start",
-    "build:backend": "yarn workspace backend build",
-    "build:all": "backstage-cli repo build --all",
+    "build:backend": "dotenv -e .env -- yarn workspace backend build",
+    "build:all": "dotenv -e .env -- backstage-cli repo build --all",
     "build-image": "yarn workspace backend build-image",
     "tsc": "tsc",
     "tsc:full": "tsc --skipLibCheck false --incremental false",
@@ -52,6 +52,7 @@
   },
   "packageManager": "yarn@4.4.1",
   "dependencies": {
-    "better-sqlite3": "^11.10.0"
+    "better-sqlite3": "^11.10.0",
+    "dotenv-cli": "^8.0.0"
   }
 }
