@@ -1,0 +1,11 @@
+services:
+  app:
+    image: justinmihigo/backstage:latest
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: backstage
+    ports:
+      - "5432:5432"
