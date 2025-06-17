@@ -4,7 +4,12 @@ metadata:
   name: backstage
   description: An example of a Backstage application.
   # Example for optional annotations
-  # annotations:
+  annotations:
+    'backstage.io/kubernetes-id': dice-roller
+    'backstage.io/kubernetes-namespace': default
+    'backstage.io/kubernetes-cluster': cluster.local
+    backstage.io/kubernetes-label-selector: 'dice-roller'
+
   #   github.com/project-slug: backstage/backstage
   #   backstage.io/techdocs-ref: dir:.
 spec:

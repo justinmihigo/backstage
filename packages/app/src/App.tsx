@@ -37,11 +37,39 @@ import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { TechRadarPage } from '@backstage-community/plugin-tech-radar';
-
-
+// import  kubernetesPlugin  from '@backstage/plugin-kubernetes/alpha';
+import { createTranslationMessages } from '@backstage/core-plugin-api/alpha';
+import { kubernetesReactTranslationRef } from '@backstage/plugin-kubernetes-react/alpha';
+import { kubernetesTranslationRef } from '@backstage/plugin-kubernetes/alpha';
+import { kubernetesClusterTranslationRef } from '@backstage/plugin-kubernetes-cluster/alpha';
 
 const app = createApp({
+  featureFlags:[{pluginId:'kubernetes',name:'kubernetes'}],
   apis,
+   __experimentalTranslations: {
+    resources: [
+      createTranslationMessages({
+        ref: kubernetesReactTranslationRef,
+        messages: {
+          "podDrawer.buttons.delete": 'Restart Pod'
+        }
+      }),
+      createTranslationMessages({
+        ref: kubernetesTranslationRef,
+        messages: {
+          'kubernetesContentPage.permissionAlert.title': 'Insufficient permissions',
+          'kubernetesContentPage.permissionAlert.message': 'You do not have permissions to view Kubernetes objects.',
+        },
+      }),
+      createTranslationMessages({
+        ref: kubernetesClusterTranslationRef,
+        messages: {
+          'kubernetesClusterContentPage.permissionAlert.title': 'Insufficient permissions',
+          'kubernetesClusterContentPage.permissionAlert.message': 'You do not have permissions to view Kubernetes objects.',
+        },
+      }),
+    ]
+  },
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,
@@ -58,17 +86,19 @@ const app = createApp({
     bind(orgPlugin.externalRoutes, {
       catalogIndex: catalogPlugin.routes.catalogIndex,
     });
+    
   },
+  
   components: {
     SignInPage: props => (
 
       [
         <SignInPage {...props} auto providers={['guest', {
-            id: 'github-auth-provider',
-            title: 'GitHub',
-            message: 'Sign in using GitHub',
-            apiRef: githubAuthApiRef,
-          }]} />,
+          id: 'github-auth-provider',
+          title: 'GitHub',
+          message: 'Sign in using GitHub',
+          apiRef: githubAuthApiRef,
+        }]} />,
 
         // <SignInPage
         //   {...props}
@@ -83,8 +113,6 @@ const app = createApp({
       ]
     )
   },
-
-
 });
 
 const routes = (
