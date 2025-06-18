@@ -4103,6 +4103,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/plugin-kubernetes-cluster@npm:^0.0.25":
+  version: 0.0.25
+  resolution: "@backstage/plugin-kubernetes-cluster@npm:0.0.25"
+  dependencies:
+    "@backstage/catalog-model": "npm:^1.7.4"
+    "@backstage/core-components": "npm:^0.17.2"
+    "@backstage/core-plugin-api": "npm:^1.10.7"
+    "@backstage/plugin-catalog-react": "npm:^1.18.0"
+    "@backstage/plugin-kubernetes-common": "npm:^0.9.5"
+    "@backstage/plugin-kubernetes-react": "npm:^0.5.7"
+    "@backstage/plugin-permission-react": "npm:^0.4.34"
+    "@kubernetes-models/apimachinery": "npm:^2.0.0"
+    "@kubernetes-models/base": "npm:^5.0.0"
+    "@material-ui/core": "npm:^4.12.2"
+    "@material-ui/lab": "npm:4.0.0-alpha.61"
+    cronstrue: "npm:^2.2.0"
+    js-yaml: "npm:^4.0.0"
+    kubernetes-models: "npm:^4.1.0"
+    lodash: "npm:^4.17.21"
+    luxon: "npm:^3.0.0"
+    react-use: "npm:^17.2.4"
+  peerDependencies:
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+    react-dom: ^17.0.0 || ^18.0.0
+    react-router-dom: ^6.3.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/4b787bc6aa96485e4f48eb7557ab7a6f860e1e3abc640204025b6681f56c033b9b248841c58260a084feab840a9872a2ca519b1a6267775ea3c428928a0d0624
+  languageName: node
+  linkType: hard
+
 "@backstage/plugin-kubernetes-common@npm:^0.9.5":
   version: 0.9.5
   resolution: "@backstage/plugin-kubernetes-common@npm:0.9.5"
@@ -13626,6 +13659,7 @@ __metadata:
     "@backstage/plugin-catalog-import": "npm:^0.13.0"
     "@backstage/plugin-catalog-react": "npm:^1.18.0"
     "@backstage/plugin-kubernetes": "npm:^0.12.7"
+    "@backstage/plugin-kubernetes-cluster": "npm:^0.0.25"
     "@backstage/plugin-org": "npm:^0.6.39"
     "@backstage/plugin-permission-react": "npm:^0.4.34"
     "@backstage/plugin-scaffolder": "npm:^1.31.0"

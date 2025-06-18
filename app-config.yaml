@@ -1,6 +1,11 @@
 app:
   title: Scaffolded Backstage App
   baseUrl: http://localhost:3000
+  extensions:
+  - entity-content:kubernetes/kubernetes:
+      config:
+        filter: kind:component,api,resource,system
+
 
 organization:
   name: My Company
@@ -49,7 +54,7 @@ integrations:
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
 
-proxy:
+# proxy:
   ### Example for how to add a proxy endpoint for the frontend.
   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
   # endpoints:
@@ -82,7 +87,7 @@ auth:
         # organization: my-org
     guest: {}
 
-scaffolder:
+# scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
@@ -101,7 +106,9 @@ catalog:
       target: ../../examples/template/template.yaml
       rules:
         - allow: [Template]
-
+    - type: url
+      target: https://github.com/mclarke47/dice-roller/blob/master/catalog-info.yaml
+        
     # Local example organizational data
     - type: file
       target: ../../examples/org.yaml
@@ -126,24 +133,24 @@ kubernetes:
       podDelete:
         enabled: true
   serviceLocatorMethod:
-    type: 'singleTenant'
+    type: 'multiTenant'
   clusterLocatorMethods:
     - type: 'localKubectlProxy'
       clusters:
-        - url: http://127.0.0.1:6443
+        - url: https://lb.kubesphere.local:6443
           name: cluster.local
-          # authProvider: 'serviceAccount'
-          skipTLSVerify: false
+          authProvider: 'serviceAccount'
+          skipTLSVerify: true
           skipMetricsLookup: true
           # serviceAccountToken: ${K8S_MINIKUBE_TOKEN}
-          dashboardUrl: http://127.0.0.1:64713 # url copied from running the command: minikube service kubernetes-dashboard -n kubernetes-dashboard
-          dashboardApp: standard
+          # dashboardUrl: http://127.0.0.1:64713 # url copied from running the command: minikube service kubernetes-dashboard -n kubernetes-dashboard
+          # dashboardApp: standard
           caData: ${K8S_CONFIG_CA_DATA}
-          caFile: '' # local path to CA file
-          customResources:
-            - group: 'argoproj.io'
-              apiVersion: 'v1alpha1'
-              plural: 'rollouts'
+          # caFile: '' # local path to CA file
+          # customResources:
+          #   - group: 'argoproj.io'
+          #     apiVersion: 'v1alpha1'
+          #     plural: 'rollouts'
        
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
 

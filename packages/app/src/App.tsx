@@ -39,8 +39,8 @@ import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { TechRadarPage } from '@backstage-community/plugin-tech-radar';
 
 
-
 const app = createApp({
+  featureFlags:[{pluginId:'kubernetes',name:'kubernetes'}],
   apis,
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
@@ -58,33 +58,22 @@ const app = createApp({
     bind(orgPlugin.externalRoutes, {
       catalogIndex: catalogPlugin.routes.catalogIndex,
     });
+    
   },
+  
   components: {
     SignInPage: props => (
 
       [
         <SignInPage {...props} auto providers={['guest', {
-            id: 'github-auth-provider',
-            title: 'GitHub',
-            message: 'Sign in using GitHub',
-            apiRef: githubAuthApiRef,
-          }]} />,
-
-        // <SignInPage
-        //   {...props}
-        //   auto
-        //   provider={{
-        //     id: 'github-auth-provider',
-        //     title: 'GitHub',
-        //     message: 'Sign in using GitHub',
-        //     apiRef: githubAuthApiRef,
-        //   }}
-        // />
+          id: 'github-auth-provider',
+          title: 'GitHub',
+          message: 'Sign in using GitHub',
+          apiRef: githubAuthApiRef,
+        }]} />,
       ]
     )
   },
-
-
 });
 
 const routes = (
