@@ -133,13 +133,13 @@ kubernetes:
       podDelete:
         enabled: true
   serviceLocatorMethod:
-    type: 'singleTenant'
+    type: 'multiTenant'
   clusterLocatorMethods:
     - type: 'localKubectlProxy'
       clusters:
         - url: https://lb.kubesphere.local:6443
           name: cluster.local
-          # authProvider: 'serviceAccount'
+          authProvider: 'serviceAccount'
           skipTLSVerify: true
           skipMetricsLookup: true
           # serviceAccountToken: ${K8S_MINIKUBE_TOKEN}

@@ -2,6 +2,30 @@ app:
   # Should be the same as backend.baseUrl when using the `app-backend` plugin.
   baseUrl: http://localhost:7007
 
+kubernetes:
+  frontend:
+      podDelete:
+        enabled: true
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'localKubectlProxy'
+      clusters:
+        - url: https://lb.kubesphere.local:6443
+          name: cluster.local
+          authProvider: 'serviceAccount'
+          skipTLSVerify: true
+          skipMetricsLookup: true
+          # serviceAccountToken: ${K8S_MINIKUBE_TOKEN}
+          # dashboardUrl: http://127.0.0.1:64713 # url copied from running the command: minikube service kubernetes-dashboard -n kubernetes-dashboard
+          # dashboardApp: standard
+          caData: ${K8S_CONFIG_CA_DATA}
+          # caFile: '' # local path to CA file
+          # customResources:
+          #   - group: 'argoproj.io'
+          #     apiVersion: 'v1alpha1'
+          #     plural: 'rollouts'
+
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
   # should use when communicating with the backend, i.e. it needs to be
