@@ -30,6 +30,12 @@ backend:
     origin: http://localhost:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
+  
+  reading:
+    allow:
+      - host: 'demo.backstage.io'
+        paths:
+          - /api/graphql/schema
   # This is for local development only, it is not recommended to use this in production
   # The production database configuration is stored in app-config.production.yaml
   database:
@@ -100,6 +106,10 @@ catalog:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
       target: ../../examples/entities.yaml
+      
+    - type: file
+      target: ../../examples/other-entities.yaml
+
 
     # Local example template
     - type: file

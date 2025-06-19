@@ -1,0 +1,51 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: infra
+spec:
+  owner: user:justinmihigo
+  
+---
+
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: node-web
+  description: A sample web
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/source-location: url:https://github.com/justinmihigo/backstage
+    
+  links:
+    - url: https://github.com/justinmihigo/backstage
+      title: Project Repository
+      icon: github
+  tags:
+    - service
+spec:
+  type: website
+  lifecycle: experimental
+  owner: user:justinmihigo
+  system: infra
+  consumesApis:
+    - graphql-example
+
+---
+
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: graphql-example
+  description: GraphQL Backend plugin
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/techdocs-builder: local
+spec:
+  owner: user:justinmihigo
+  type: graphql
+  lifecycle: experimental
+  system: infra
+  apiConsumedBy:
+    - node-web
+  definition: 
+    $text: https://demo.backstage.io/api/graphql/schema
