@@ -109,7 +109,11 @@ catalog:
       
     - type: file
       target: ../../examples/other-entities.yaml
-
+      
+    - type: file
+      target: ../../examples/slack-notifications.yaml
+      rules:
+        - allow: [Template]
 
     # Local example template
     - type: file
@@ -173,3 +177,19 @@ kubernetes:
 permission:
   # setting this to `false` will disable permissions
   enabled: true
+
+notifications:
+  processors:
+    slack:
+      - token: ${SLACK_TOKEN}
+#         webhookUrl: ${WEBHOOK_URL}
+#         conversationId: C092B8YEPT6
+#         conversationName: mine
+        # broadcastChannels: # Optional, if you wish to support broadcast notifications.
+        #   - C092B8YEPT6
+
+slack:
+  token: ${SLACK_TOKEN}
+  webhookUrl: ${WEBHOOK_URL}
+  conversationId: C092B8YEPT6
+  conversationName: mine

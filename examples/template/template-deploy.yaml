@@ -13,7 +13,11 @@ spec:
     - title: Fill the deployment details
       required:
         - namespace
-          deployName
+        - deployName
+        - replicas
+        - imageName
+        - containerPort
+        - pullPolicy
       properties:
         namespace:
           title: Namespace
@@ -28,6 +32,38 @@ spec:
           description: Deployment name
           ui:options:
             rows: 5
+        replicas:
+          title: Replicas
+          type: number
+          description: number of replicas
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+        imageName:
+          title: Image
+          type: string
+          description: Image name
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+        containerPort:
+          title: Container Port
+          type: number
+          description: number of replicas
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+        pullPolicy:
+          title: Image Pull Policy
+          type: string
+          description: Image policy
+          default: always 
+          enum:
+            - Always
+            - IfNotPresent
+          enumNames: 
+            - 'Always'
+            - 'IfNotPresent'
 
 
     # - title: Deployment
@@ -41,53 +77,60 @@ spec:
     #       ui:options:
     #         rows: 5
 
-    - title: Replicas
-      required:
-        - replicas
-      properties:
-        replicas:
-          title: Replicas
-          type: number
-          description: number of replicas
-          ui:autofocus: true
-          ui:options:
-            rows: 5
+    # - title: Replicas
+    #   required:
+    #     - replicas
+    #   properties:
+    #     replicas:
+    #       title: Replicas
+    #       type: number
+    #       description: number of replicas
+    #       ui:autofocus: true
+    #       ui:options:
+    #         rows: 5
 
-    - title: Image
-      required:
-        - imageName
-      properties:
-        imageName:
-          title: Image
-          type: string
-          description: Image name
-          ui:autofocus: true
-          ui:options:
-            rows: 5
+    # - title: Image
+    #   required:
+    #     - imageName
+    #   properties:
+    #     imageName:
+    #       title: Image
+    #       type: string
+    #       description: Image name
+    #       ui:autofocus: true
+    #       ui:options:
+    #         rows: 5
 
-    - title: Container Port
-      required:
-        - containerPort
-      properties:
-        containerPort:
-          title: Container Port
-          type: number
-          description: number of replicas
-          ui:autofocus: true
-          ui:options:
-            rows: 5
+    # - title: Container Port
+    #   required:
+    #     - containerPort
+    #   properties:
+    #     containerPort:
+    #       title: Container Port
+    #       type: number
+    #       description: number of replicas
+    #       ui:autofocus: true
+    #       ui:options:
+    #         rows: 5
 
-    - title: Image pull Policy
-      required:
-        - pullPolicy
-      properties:
-        pullPolicy:
-          title: Image Pull Policy
-          type: string
-          description: Image policy
-          ui:autofocus: true
-          ui:options:
-            rows: 5
+    # - title: Image pull Policy
+    #   required:
+    #     - pullPolicy
+    #   properties:
+    #     pullPolicy:
+    #       title: Image Pull Policy
+    #       type: string
+    #       description: Image policy
+    #       default: always 
+    #       enum:
+    #         - always
+    #         - ifnotpresent
+    #       enumNames: 
+    #         - 'Always'
+    #         - 'IfNotPresent'
+          # ui:autofocus: true
+          # ui:options:
+          #   rows: 5
 
     - title: Repository
       required:
@@ -132,6 +175,11 @@ spec:
       input:
         repoContentsUrl: ${{steps['publish'].output.repoContentsUrl}}
         catalogInfoPath: '/catalog-info.yaml'
+    - id: send-slack-message
+      name: Send slack message via Slack API
+      action: slack:sendMessage:conversation
+      input:
+        message: "The deployment template has been successfully executed and the component has been registered in the catalog."
   output:
     links:
       - title: Repository

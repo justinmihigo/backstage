@@ -15,7 +15,8 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
     backstage.io/source-location: url:https://github.com/justinmihigo/backstage
-    
+    backstage.io/managed-by-location: url:https://github.com/justinmihigo/backstage
+    github.com/project-slug: justinmihigo/backstage
   links:
     - url: https://github.com/justinmihigo/backstage
       title: Project Repository

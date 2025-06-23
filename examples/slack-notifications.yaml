@@ -1,0 +1,38 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: slack-message-demo
+  title: My Slack message demo
+  description: Send a message via Slack
+spec:
+  owner: mdude2314
+  type: service
+
+  steps:
+    # this step is an example of using the webhook action
+    - id: send-slack-message
+      name: Send slack message via Slack webhook
+      action: slack:sendMessage:webhook
+      input:
+        message: "Hello, world!"
+    #     # webhookUrl: "https://hooks.slack.com/services/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" # optional if the URL is supplied in the app-config.yaml
+
+    # # this step is an example of using the conversation action
+    - id: send-slack-message
+      name: Send slack message via Slack API
+      action: slack:sendMessage:conversation
+      input:
+        message: "Hello, world!"
+        # conversationId: "C092B8YEPT6" # optional if the conversationId is supplied in the app-config.yaml, or the conversationName is supplied at all
+        # conversationName: "mine" # optional if the conversationName is supplied in the app-config.yaml, or the conversationId is supplied at all
+    # - id: notify
+    #   name: Notify
+    #   action: notification:send
+    #   input:
+    #     recipients: entity
+    #     entityRefs:
+    #       - component:default/backstage
+    #     title: 'Template executed'
+    #     info: 'Your template has been executed'
+    #     severity: 'info'
+    #     link: https://backstage.io
