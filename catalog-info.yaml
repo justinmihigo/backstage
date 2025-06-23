@@ -5,12 +5,12 @@ metadata:
   description: An example of a Backstage application.
   # Example for optional annotations
   annotations:
-    'backstage.io/kubernetes-id': dice-roller
-    'backstage.io/kubernetes-namespace': default
-    'backstage.io/kubernetes-cluster': cluster.local
-
-  #   github.com/project-slug: backstage/backstage
-  #   backstage.io/techdocs-ref: dir:.
+    'backstage.io/kubernetes-id': backstage
+    'backstage.io/kubernetes-namespace': backstage
+    'backstage.io/kubernetes-cluster': local
+    github.com/project-slug: justinmihigo/backstage
+    backstage.io/managed-by-location: url:https://github.com/justinmihigo/backstage
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: website
   owner: justinmihigo
