@@ -1,0 +1,189 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: deployment-template
+  title: Kubernetes Deployment Template
+  description: Kubernetes template contains a base boiler plate that we need during deployment https://github.com/mclarke47/dice-roller/blob/master/catalog-info.yaml
+spec:
+  owner: user:justinmihigo
+  type: service
+
+  parameters:
+      
+    - title: Fill the deployment details
+      required:
+        - namespace
+        - deployName
+        - replicas
+        - imageName
+        - containerPort
+        - pullPolicy
+      properties:
+        namespace:
+          title: Namespace
+          type: string
+          description: namespace where your deployment will be deployed
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+        deployName:
+          title: Deployment
+          type: string
+          description: Deployment name
+          ui:options:
+            rows: 5
+        replicas:
+          title: Replicas
+          type: number
+          description: number of replicas
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+        imageName:
+          title: Image
+          type: string
+          description: Image name
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+        containerPort:
+          title: Container Port
+          type: number
+          description: number of replicas
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+        pullPolicy:
+          title: Image Pull Policy
+          type: string
+          description: Image policy
+          default: always 
+          enum:
+            - Always
+            - IfNotPresent
+          enumNames: 
+            - 'Always'
+            - 'IfNotPresent'
+
+
+    # - title: Deployment
+    #   required:
+    #     - deployName
+    #   properties:
+    #     deployName:
+    #       title: Deployment
+    #       type: string
+    #       description: Deployment name
+    #       ui:options:
+    #         rows: 5
+
+    # - title: Replicas
+    #   required:
+    #     - replicas
+    #   properties:
+    #     replicas:
+    #       title: Replicas
+    #       type: number
+    #       description: number of replicas
+    #       ui:autofocus: true
+    #       ui:options:
+    #         rows: 5
+
+    # - title: Image
+    #   required:
+    #     - imageName
+    #   properties:
+    #     imageName:
+    #       title: Image
+    #       type: string
+    #       description: Image name
+    #       ui:autofocus: true
+    #       ui:options:
+    #         rows: 5
+
+    # - title: Container Port
+    #   required:
+    #     - containerPort
+    #   properties:
+    #     containerPort:
+    #       title: Container Port
+    #       type: number
+    #       description: number of replicas
+    #       ui:autofocus: true
+    #       ui:options:
+    #         rows: 5
+
+    # - title: Image pull Policy
+    #   required:
+    #     - pullPolicy
+    #   properties:
+    #     pullPolicy:
+    #       title: Image Pull Policy
+    #       type: string
+    #       description: Image policy
+    #       default: always 
+    #       enum:
+    #         - always
+    #         - ifnotpresent
+    #       enumNames: 
+    #         - 'Always'
+    #         - 'IfNotPresent'
+          # ui:autofocus: true
+          # ui:options:
+          #   rows: 5
+
+    - title: Repository
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository
+          type: string
+          description: Repository url
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+    
+  steps:
+    - id: fetch-base
+      name: Fetch base
+      action: fetch:template
+      input: 
+        url: ./k8s-manifests
+        values: 
+          name: ${{parameters.deployName}}
+          deployName: ${{parameters.deployName}}
+          replicas: ${{parameters.replicas}}
+          pullPolicy: ${{parameters.pullPolicy}}
+          imageName: ${{parameters.imageName}}
+          containerPort: ${{parameters.containerPort}}
+          namespace: ${{parameters.namespace}}
+    
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        allowedHosts:  ['github.com']
+        description: this is the github ${{parameters.name}}
+        repoUrl: ${{parameters.repoUrl}}
+        defaultBranch: 'main'
+    
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{steps['publish'].output.repoContentsUrl}}
+        catalogInfoPath: '/catalog-info.yaml'
+    - id: send-slack-message
+      name: Send slack message via Slack API
+      action: slack:sendMessage:conversation
+      input:
+        message: "The deployment template has been successfully executed and the component has been registered in the catalog."
+  output:
+    links:
+      - title: Repository
+        url: ${{steps['publish'].output.remoteUrl}}
+      - title: Open in Catalog
+        icon: catalog
+        entityRef: ${{steps['register'].output.entityRef}}

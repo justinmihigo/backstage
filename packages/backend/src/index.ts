@@ -7,7 +7,7 @@
  */
 
 import { createBackend } from '@backstage/backend-defaults';
-
+import sendSlackMessageModule from "@mdude2314/backstage-plugin-scaffolder-backend-module-slack"
 
 const backend = createBackend();
 
@@ -54,7 +54,14 @@ backend.add(import('@backstage/plugin-search-backend-module-techdocs'));
 // kubernetes
 backend.add(import('@backstage/plugin-kubernetes-backend'));
 
-
+// notifications
+backend.add(import('@backstage/plugin-notifications-backend'));
+backend.add(import('@backstage/plugin-signals-backend'))
+backend.add(import('@backstage/plugin-notifications-backend-module-slack'));
+backend.add(sendSlackMessageModule());
+backend.add(
+  import('@backstage/plugin-scaffolder-backend-module-notifications'),
+);
 
 backend.start();
 

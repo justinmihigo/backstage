@@ -1,0 +1,14 @@
+apiVersion: v1 
+kind: Deployment
+metadata:
+  name: ${{values.deployName}}
+  namespace: ${{values.namespace}}
+spec:
+  replicas: ${{values.replicas}}
+  containers:  
+    - name: ${{values.deployName}}
+      image: ${{values.imageName}}
+      imagePullPolicy: ${{values.pullPolicy}}
+      ports:
+        - containerPort: ${{values.containerPort}}
+      

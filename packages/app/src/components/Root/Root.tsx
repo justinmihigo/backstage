@@ -28,7 +28,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import { MyGroupsSidebarItem } from '@backstage/plugin-org';
 import GroupIcon from '@material-ui/icons/People';
 import RadarIcon from '@material-ui/icons/TrackChanges';
-
+// import { Notifications } from '@material-ui/icons'
+import { NotificationsSidebarItem } from '@backstage/plugin-notifications';
 const useSidebarLogoStyles = makeStyles({
   root: {
     width: sidebarConfig.drawerWidthClosed,
@@ -81,6 +82,10 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
           to="tech-radar"
           text="Tech Radar"
         />
+        {/* <SidebarItem icon={Notifications} to="/notifications" text="Notifications"/> */}
+
+        <NotificationsSidebarItem />
+
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>
