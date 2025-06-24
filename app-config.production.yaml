@@ -1,6 +1,14 @@
 app:
   # Should be the same as backend.baseUrl when using the `app-backend` plugin.
   baseUrl: http://localhost:7007
+  title: Scaffolded Backstage App
+  extensions:
+  - entity-content:kubernetes/kubernetes:
+      config:
+        filter: kind:component,api,resource,system
+
+organization:
+  name: My Backstage
 
 kubernetes:
   frontend:
@@ -9,10 +17,10 @@ kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
   clusterLocatorMethods:
-    - type: 'localKubectlProxy'
+    - type: 'config'
       clusters:
-        - url: https://lb.kubesphere.local:6443
-          name: cluster.local
+        - url: http://127.0.0.1:8001
+          name: local
           authProvider: 'serviceAccount'
           skipTLSVerify: true
           skipMetricsLookup: true
@@ -25,6 +33,12 @@ kubernetes:
           #   - group: 'argoproj.io'
           #     apiVersion: 'v1alpha1'
           #     plural: 'rollouts'
+integrations:
+  github:
+    - host: github.com
+      # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
+      # about setting up the GitHub integration here: https://backstage.io/docs/integrations/github/locations#configuration
+      token: ${GITHUB_TOKEN}
 
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
@@ -51,6 +65,28 @@ backend:
       # ssl:
       #   ca: # if you have a CA file and want to verify it you can uncomment this section
       #     $file: <file-path>/ca/server.crt
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+    # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
+    # Default Helmet Content-Security-Policy values can be removed by setting the key to false
+  cors:
+    origin: http://localhost:3000
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  
+  reading:
+    allow:
+      - host: 'demo.backstage.io'
+        paths:
+          - /api/graphql/schema
+
+techdocs:
+  builder: 'local' # Alternatives - 'external'
+  generator:
+    runIn: 'local' # Alternatives - 'local'
+  publisher:
+    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+
 
 auth:
   providers:
@@ -63,9 +99,11 @@ auth:
     guest: {}
 
 catalog:
-  # Overrides the default list locations from app-config.yaml as these contain example data.
-  # See https://backstage.io/docs/features/software-catalog/#adding-components-to-the-catalog for more details
-  # on how to get entities into the catalog.
+  import:
+    entityFilename: catalog-info.yaml
+    pullRequestBranchName: backstage-integration
+  rules:
+    - allow: [Component, System, API, Resource, Location]
   locations:
     # Local example data, replace this with your production config, these are intended for demo use only.
     # File locations are relative to the backend process, typically in a deployed context, such as in a Docker container, this will be the root
@@ -83,3 +121,36 @@ catalog:
       target: ./examples/org.yaml
       rules:
         - allow: [User, Group]
+
+    - type: file
+      target: ./examples/other-entities.yaml
+      
+    - type: file
+      target: ./examples/slack-notifications.yaml
+      rules:
+        - allow: [Template]
+
+    - type: url
+      target: https://github.com/mclarke47/dice-roller/blob/master/catalog-info.yaml
+    
+    - type: file
+      target: ./examples/template/template-deploy.yaml
+      rules:
+        - allow: [Template]
+
+  useUrlReadersSearch: true
+
+permission:
+  # setting this to `false` will disable permissions
+  enabled: true
+
+notifications:
+  processors:
+    slack:
+      - token: ${SLACK_TOKEN}
+
+slack:
+  token: ${SLACK_TOKEN}
+  webhookUrl: ${WEBHOOK_URL}
+  conversationId: C092B8YEPT6
+  conversationName: mine

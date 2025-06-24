@@ -159,6 +159,8 @@ spec:
           imageName: ${{parameters.imageName}}
           containerPort: ${{parameters.containerPort}}
           namespace: ${{parameters.namespace}}
+          repoUrl: https://github.com/${{(parameters.repoUrl | parseRepoUrl).owner}}/${{(parameters.repoUrl | parseRepoUrl).repo}}
+          repoName: ${{(parameters.repoUrl | parseRepoUrl).repo}}
     
     - id: publish
       name: Publish
@@ -168,6 +170,7 @@ spec:
         description: this is the github ${{parameters.name}}
         repoUrl: ${{parameters.repoUrl}}
         defaultBranch: 'main'
+
     
     - id: register
       name: Register
@@ -175,11 +178,12 @@ spec:
       input:
         repoContentsUrl: ${{steps['publish'].output.repoContentsUrl}}
         catalogInfoPath: '/catalog-info.yaml'
+
     - id: send-slack-message
       name: Send slack message via Slack API
       action: slack:sendMessage:conversation
       input:
-        message: "The deployment template has been successfully executed and the component has been registered in the catalog."
+        message: The deployment template  for ${{parameters.deployName}} has been successfully executed and the component has been registered in the catalog.
   output:
     links:
       - title: Repository

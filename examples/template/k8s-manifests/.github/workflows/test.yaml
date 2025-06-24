@@ -1,0 +1,10 @@
+name: CI void
+on:
+  push
+jobs:
+  test-void:
+    runs-on: ubuntu-latest
+    name: test-void
+    steps:
+      - name: Test
+        run: echo 'Deployment successful'

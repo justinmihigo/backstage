@@ -63,5 +63,8 @@ backend.add(
   import('@backstage/plugin-scaffolder-backend-module-notifications'),
 );
 
+// argocd
+backend.add(import('@roadiehq/backstage-plugin-argo-cd-backend/alpha'));
+
 backend.start();
 

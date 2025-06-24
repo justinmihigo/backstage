@@ -52,11 +52,13 @@ import {
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-import {isGithubActionsAvailable, EntityGithubActionsContent} from '@backstage-community/plugin-github-actions'
+import { isGithubActionsAvailable, EntityGithubActionsContent } from '@backstage-community/plugin-github-actions'
 import {
   EntityKubernetesContent,
   isKubernetesAvailable,
 } from '@backstage/plugin-kubernetes';
+
+import { EntityArgoCDOverviewCard, isArgocdAvailable } from '@roadiehq/backstage-plugin-argo-cd';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -76,7 +78,7 @@ const cicdContent = (
       <EntitySwitch.Case if={isGithubActionsAvailable}>
         <EntityGithubActionsContent />
       </EntitySwitch.Case>
-      }
+    }
     <EntitySwitch.Case>
       <EmptyState
         title="No CI/CD available for this entity"
@@ -133,13 +135,19 @@ const overviewContent = (
     <Grid item md={6} xs={12}>
       <EntityCatalogGraphCard variant="gridItem" height={400} />
     </Grid>
-
-    <Grid item md={4} xs={12}>
-      <EntityLinksCard />
-    </Grid>
-    <Grid item md={8} xs={12}>
-      <EntityHasSubcomponentsCard variant="gridItem" />
-    </Grid>
+    <EntitySwitch>
+      <EntitySwitch.Case if={e=>Boolean(isArgocdAvailable(e))}>
+        <Grid item md={8}>
+          <EntityArgoCDOverviewCard/>
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+      <Grid item md={4} xs={12}>
+        <EntityLinksCard />
+      </Grid>
+      <Grid item md={8} xs={12}>
+        <EntityHasSubcomponentsCard variant="gridItem" />
+      </Grid>
   </Grid>
 );
 
