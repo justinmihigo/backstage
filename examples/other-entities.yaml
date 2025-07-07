@@ -15,6 +15,8 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
     argocd/app-name: python-demo
+    prometheus.io/rule: 'sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="default"}[5m]))'
+    prometheus.io/alert: all
     backstage.io/source-location: url:https://github.com/justinmihigo/backstage
     backstage.io/managed-by-location: url:https://github.com/justinmihigo/backstage
     github.com/project-slug: justinmihigo/backstage
@@ -64,7 +66,7 @@ metadata:
 spec:
   type: openapi
   lifecycle: production
-  owner: group:guests/justinmihigo
+  owner: group:default/guests
   system: infra # Optional: If it belongs to a larger system
   definition: |
     openapi: 3.0.0

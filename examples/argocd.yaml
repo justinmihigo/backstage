@@ -1,0 +1,48 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: chart-with-argocd
+  title: Chart with ArgoCD
+spec:
+  owner: user:justinmihigo
+  type: service
+  parameters:
+    - title: Chart with ArgoCD
+      description: Create a Helm chart with ArgoCD
+      required:
+        - serviceName
+        - repoUrl
+      properties:
+        serviceName:
+          title: Service Name
+          type: string
+          description: The name of the service to create.
+        repoUrl:
+          title: Repository URL
+          type: string
+          description: The URL of the repository containing the Helm chart.
+          default: https://justinmihigo.github.io/helm-demo/
+        
+  steps:
+    - id: wait-last-workflow
+      name: Wait for last workflow to finish
+      action: github:wait-last-workflow
+      input:
+        owner: justinmihigo
+        repo: backstage
+        branch: main
+          
+    - id: argocd-create
+      name: Create ArgoCD Application
+      action: argocd:create-helm-application
+      input:
+        name: ${{ parameters.serviceName }}
+        namespace: default
+        application:
+          path: './'
+          repoURL: ${{parameters.repoUrl}}
+          targetRevision: main
+        # chart:
+        #   name: ${{parameters.serviceName}}
+        #   repo: ${{parameters.repoUrl}}
+        #   version: 0.1.5

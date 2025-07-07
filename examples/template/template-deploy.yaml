@@ -65,73 +65,6 @@ spec:
             - 'Always'
             - 'IfNotPresent'
 
-
-    # - title: Deployment
-    #   required:
-    #     - deployName
-    #   properties:
-    #     deployName:
-    #       title: Deployment
-    #       type: string
-    #       description: Deployment name
-    #       ui:options:
-    #         rows: 5
-
-    # - title: Replicas
-    #   required:
-    #     - replicas
-    #   properties:
-    #     replicas:
-    #       title: Replicas
-    #       type: number
-    #       description: number of replicas
-    #       ui:autofocus: true
-    #       ui:options:
-    #         rows: 5
-
-    # - title: Image
-    #   required:
-    #     - imageName
-    #   properties:
-    #     imageName:
-    #       title: Image
-    #       type: string
-    #       description: Image name
-    #       ui:autofocus: true
-    #       ui:options:
-    #         rows: 5
-
-    # - title: Container Port
-    #   required:
-    #     - containerPort
-    #   properties:
-    #     containerPort:
-    #       title: Container Port
-    #       type: number
-    #       description: number of replicas
-    #       ui:autofocus: true
-    #       ui:options:
-    #         rows: 5
-
-    # - title: Image pull Policy
-    #   required:
-    #     - pullPolicy
-    #   properties:
-    #     pullPolicy:
-    #       title: Image Pull Policy
-    #       type: string
-    #       description: Image policy
-    #       default: always 
-    #       enum:
-    #         - always
-    #         - ifnotpresent
-    #       enumNames: 
-    #         - 'Always'
-    #         - 'IfNotPresent'
-          # ui:autofocus: true
-          # ui:options:
-          #   rows: 5
-
     - title: Repository
       required:
         - repoUrl
@@ -167,9 +100,29 @@ spec:
       action: publish:github
       input:
         allowedHosts:  ['github.com']
+        repoVisibility: public
         description: this is the github ${{parameters.name}}
         repoUrl: ${{parameters.repoUrl}}
         defaultBranch: 'main'
+
+    - id: wait-last-workflow
+      name: Wait for last workflow to finish
+      action: github:wait-last-workflow
+      input:
+        owner: ${{(parameters.repoUrl | parseRepoUrl).owner}}
+        repo: ${{(parameters.repoUrl | parseRepoUrl).repo}}
+        branch: 'main'
+          
+    - id: argocd-create
+      name: Create ArgoCD Application
+      action: argocd:create-helm-application
+      input:
+        name: ${{ parameters.deployName }}
+        namespace: ${{ parameters.namespace }}
+        application:
+          path: './'
+          repoURL: https://github.com/${{(parameters.repoUrl | parseRepoUrl).owner}}/${{(parameters.repoUrl | parseRepoUrl).repo}}
+          targetRevision: main
 
     
     - id: register
@@ -183,7 +136,7 @@ spec:
       name: Send slack message via Slack API
       action: slack:sendMessage:conversation
       input:
-        message: The deployment template  for ${{parameters.deployName}} has been successfully executed and the component has been registered in the catalog.
+        message: The deployment template  for ${{parameters.deployName}} in ${{parameters.namespace}} namespace has been successfully executed and the component has been registered in the catalog.
   output:
     links:
       - title: Repository

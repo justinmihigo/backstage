@@ -66,5 +66,9 @@ backend.add(
 // argocd
 backend.add(import('@roadiehq/backstage-plugin-argo-cd-backend/alpha'));
 
+
+// backend.add(import('@backstage/plugin-scaffolder-backend'));
+// See https://
+backend.add(import('@internal/plugin-scaffolder-backend-module-argocd'));
 backend.start();
 

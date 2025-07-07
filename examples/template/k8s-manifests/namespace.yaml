@@ -1,4 +1,4 @@
 apiVersion: v1 
 kind: Namespace
 metadata:
-  name: ${{values.deployName}}
+  name: ${{values.namespace | dump}}

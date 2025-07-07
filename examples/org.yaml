@@ -17,6 +17,14 @@ spec:
   children: []
 ---
 apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: enthusiasts
+spec:
+  type: team  
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
   name: justinmihigo

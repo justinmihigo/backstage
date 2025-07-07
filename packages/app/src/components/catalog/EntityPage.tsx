@@ -56,9 +56,17 @@ import { isGithubActionsAvailable, EntityGithubActionsContent } from '@backstage
 import {
   EntityKubernetesContent,
   isKubernetesAvailable,
-} from '@backstage/plugin-kubernetes';
+} from '@backstage/plugin-kubernetes'
 
 import { EntityArgoCDOverviewCard, isArgocdAvailable } from '@roadiehq/backstage-plugin-argo-cd';
+import {
+  EntityPrometheusContent,
+} from '@roadiehq/backstage-plugin-prometheus';
+import {
+  EntityPrometheusAlertCard,
+  EntityPrometheusGraphCard,
+  isPrometheusAvailable
+} from '@roadiehq/backstage-plugin-prometheus'
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -136,18 +144,30 @@ const overviewContent = (
       <EntityCatalogGraphCard variant="gridItem" height={400} />
     </Grid>
     <EntitySwitch>
-      <EntitySwitch.Case if={e=>Boolean(isArgocdAvailable(e))}>
+      <EntitySwitch.Case if={e => Boolean(isArgocdAvailable(e))}>
         <Grid item md={8}>
-          <EntityArgoCDOverviewCard/>
+          <EntityArgoCDOverviewCard />
         </Grid>
       </EntitySwitch.Case>
     </EntitySwitch>
-      <Grid item md={4} xs={12}>
-        <EntityLinksCard />
-      </Grid>
-      <Grid item md={8} xs={12}>
-        <EntityHasSubcomponentsCard variant="gridItem" />
-      </Grid>
+    <Grid item md={4} xs={12}>
+      <EntityLinksCard />
+    </Grid>
+    <Grid item md={8} xs={12}>
+      <EntityHasSubcomponentsCard variant="gridItem" />
+    </Grid>
+    <EntitySwitch>
+      <EntitySwitch.Case if={e => Boolean(isPrometheusAvailable(e))}>
+        <Grid item md={8}>
+          <EntityPrometheusAlertCard />
+        </Grid>
+        <Grid item md={6}>
+          <EntityPrometheusGraphCard />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+
+
   </Grid>
 );
 
@@ -167,6 +187,10 @@ const serviceEntityPage = (
       if={isKubernetesAvailable}
     >
       <EntityKubernetesContent refreshIntervalMs={30000} />
+    </EntityLayout.Route>
+     
+    <EntityLayout.Route path="/prometheus" title="Prometheus">
+      <EntityPrometheusContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/api" title="API">
@@ -228,6 +252,9 @@ const websiteEntityPage = (
 
     <EntityLayout.Route path="/docs" title="Docs">
       {techdocsContent}
+    </EntityLayout.Route>
+    <EntityLayout.Route path="/prometheus" title="Prometheus">
+      <EntityPrometheusContent />
     </EntityLayout.Route>
   </EntityLayout>
 );
