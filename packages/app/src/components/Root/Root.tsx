@@ -84,7 +84,11 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         />
         {/* <SidebarItem icon={Notifications} to="/notifications" text="Notifications"/> */}
 
-        <NotificationsSidebarItem />
+        <NotificationsSidebarItem
+          webNotificationsEnabled // Enables WebNotification API
+          titleCounterEnabled     // Enables counter in page title
+          snackbarEnabled={true} // Disables snackbar notifications
+        />
 
         {/* End global nav */}
         <SidebarDivider />

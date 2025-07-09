@@ -14,7 +14,7 @@ metadata:
   description: A sample web
   annotations:
     backstage.io/techdocs-ref: dir:.
-    argocd/app-name: python-demo
+    argocd/app-name: nginx-server-1
     prometheus.io/rule: 'sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="default"}[5m]))'
     prometheus.io/alert: all
     backstage.io/source-location: url:https://github.com/justinmihigo/backstage

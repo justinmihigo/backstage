@@ -66,7 +66,7 @@ integrations:
 proxy:
   endpoints:
     '/argocd/api':
-      target: https://localhost:8080/api/v1/
+      target: ${ARGOCD_SERVER_URL_PROXY}
       changeOrigin: true
       secure: false
       headers:
@@ -74,7 +74,7 @@ proxy:
           ${ARGOCD_TOKEN}
 
     '/prometheus/api':
-      target: 'http://localhost:9090/api/v1/'
+      target: ${PROMETHEUS_URL_PROXY}
       credentials: dangerously-allow-unauthenticated
       # changeOrigin: true
       # secure: false
@@ -177,14 +177,14 @@ kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
   clusterLocatorMethods:
-    - type: 'localKubectlProxy'
+    - type: 'config'
       clusters:
-        - url: https://lb.kubesphere.local:6443
+        - url: ${K8S_URL}
           name: cluster.local
           authProvider: 'serviceAccount'
           skipTLSVerify: true
           skipMetricsLookup: true
-          # serviceAccountToken: ${K8S_MINIKUBE_TOKEN}
+          serviceAccountToken: ${K8S_SERVICE_ACCOUNT_TOKEN}
           # dashboardUrl: http://127.0.0.1:64713 # url copied from running the command: minikube service kubernetes-dashboard -n kubernetes-dashboard
           # dashboardApp: standard
           caData: ${K8S_CONFIG_CA_DATA}
@@ -228,7 +228,7 @@ argocd:
       instances:
         - name: argocd-server
           secure: false
-          url: 'http://localhost:8080'
+          url: ${ARGOCD_SERVER_URL}
           token: ${ARGOCD_AUTH_TOKEN}
 
 # prometheus:

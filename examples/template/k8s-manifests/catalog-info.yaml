@@ -3,6 +3,7 @@ kind: Component
 metadata:
   name: ${{ values.name | dump }}
   annotations:
+    argocd/app-name: ${{values.deployName}}
     backstage.io/techdocs-ref: url:${{values.repoUrl}}
     backstage.io/managed-by-location: url:${{values.repoUrl}}
     github.com/project-slug: justinmihigo/${{values.repoName}}

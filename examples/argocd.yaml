@@ -24,25 +24,37 @@ spec:
           default: https://justinmihigo.github.io/helm-demo/
         
   steps:
-    - id: wait-last-workflow
-      name: Wait for last workflow to finish
-      action: github:wait-last-workflow
-      input:
-        owner: justinmihigo
-        repo: backstage
-        branch: main
+    # - id: wait-last-workflow
+    #   name: Wait for last workflow to finish
+    #   action: github:wait-last-workflow
+    #   input:
+    #     owner: justinmihigo
+    #     repo: backstage
+    #     branch: main
           
-    - id: argocd-create
-      name: Create ArgoCD Application
-      action: argocd:create-helm-application
+    # - id: argocd-create
+    #   name: Create ArgoCD Application
+    #   action: argocd:create-helm-application
+    #   input:
+    #     name: ${{ parameters.serviceName }}
+    #     namespace: default
+    #     application:
+    #       path: './'
+    #       repoURL: ${{parameters.repoUrl}}
+    #       targetRevision: main
+    #     # chart:
+    #     #   name: ${{parameters.serviceName}}
+    #     #   repo: ${{parameters.repoUrl}}
+    #     #   version: 0.1.5
+
+    - id: notify
+      name: Notify
+      action: notification:send
       input:
-        name: ${{ parameters.serviceName }}
-        namespace: default
-        application:
-          path: './'
-          repoURL: ${{parameters.repoUrl}}
-          targetRevision: main
-        # chart:
-        #   name: ${{parameters.serviceName}}
-        #   repo: ${{parameters.repoUrl}}
-        #   version: 0.1.5
+        recipients: entity
+        entityRefs:
+          - component:default/backstage
+        title: 'Template executed'
+        info: 'Your template has been executed'
+        severity: 'low'
+        link: https://backstage.io

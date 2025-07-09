@@ -107,6 +107,7 @@ export const argocdCreateHelmApplication = () => {
             if (process.env.POD_NAMESPACE === undefined) {
                 throw new Error('POD_NAMESPACE is not set');
             }
+            obj.metadata.spec.destination.server= process.env.K8S_SERVER_URL || "https://kubernetes.default.svc"
             obj.metadata.namespace = process.env.POD_NAMESPACE;
             obj.spec.destination.namespace = ctx.input.namespace;
             if (ctx.input?.chart?.name) {

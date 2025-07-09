@@ -15,11 +15,11 @@ kubernetes:
       podDelete:
         enabled: true
   serviceLocatorMethod:
-    type: 'multiTenant'
+    type: 'singleTenant'
   clusterLocatorMethods:
     - type: 'config'
       clusters:
-        - url: http://127.0.0.1:8001
+        - url: ${K8S_URL}
           name: local
           authProvider: 'serviceAccount'
           skipTLSVerify: true
@@ -39,6 +39,20 @@ integrations:
       # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
       # about setting up the GitHub integration here: https://backstage.io/docs/integrations/github/locations#configuration
       token: ${GITHUB_TOKEN}
+
+proxy:
+  endpoints:
+    '/argocd/api':
+      target: ${ARGOCD_SERVER_URL_PROXY}
+      changeOrigin: true
+      secure: false
+      headers:
+        Cookie: 
+          ${ARGOCD_TOKEN}
+
+    '/prometheus/api':
+      target: ${PROMETHEUS_URL_PROXY}
+      credentials: dangerously-allow-unauthenticated
 
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
@@ -80,6 +94,7 @@ backend:
         paths:
           - /api/graphql/schema
 
+
 techdocs:
   builder: 'local' # Alternatives - 'external'
   generator:
@@ -97,6 +112,8 @@ auth:
             resolvers:
               - resolver: usernameMatchingUserEntityName
     guest: {}
+
+
 
 catalog:
   import:
@@ -140,6 +157,8 @@ catalog:
 
   useUrlReadersSearch: true
 
+
+
 permission:
   # setting this to `false` will disable permissions
   enabled: true
@@ -154,3 +173,14 @@ slack:
   webhookUrl: ${WEBHOOK_URL}
   conversationId: C092B8YEPT6
   conversationName: mine
+
+argocd:
+  username: ${ARGOCD_USERNAME}
+  password: ${ARGOCD_PASSWORD}
+  appLocatorMethods:
+    - type: 'config'
+      instances:
+        - name: argocd-server
+          secure: false
+          url: ${ARGOCD_SERVER_URL}
+          token: ${ARGOCD_AUTH_TOKEN}
