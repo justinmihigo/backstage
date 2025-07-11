@@ -271,4 +271,3 @@ ai:
       modelName: 'text-embedding-3-small'
       batchSize: 512
       embeddingsDimensions: 1536
-      # apiKey: 'AIzaSyBt9_oD7eeKd46xKOmetEjUZbYZLzmSNGU'
