@@ -272,4 +272,3 @@ ai:
       batchSize: 512
       embeddingsDimensions: 1536
       # apiKey: 'AIzaSyBt9_oD7eeKd46xKOmetEjUZbYZLzmSNGU'
-      openAIApiKey: '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'
