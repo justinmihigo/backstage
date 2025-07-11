@@ -9,6 +9,8 @@
 import { createBackend } from '@backstage/backend-defaults';
 import sendSlackMessageModule from "@mdude2314/backstage-plugin-scaffolder-backend-module-slack"
 
+import { notificationsPlugin } from './plugins/notifications';
+import { ragai } from './plugins/rag-ai';
 const backend = createBackend();
 
 backend.add(import('@backstage/plugin-app-backend'));
@@ -70,5 +72,10 @@ backend.add(import('@roadiehq/backstage-plugin-argo-cd-backend/alpha'));
 // backend.add(import('@backstage/plugin-scaffolder-backend'));
 // See https://
 backend.add(import('@internal/plugin-scaffolder-backend-module-argocd'));
+// backend.add(import('@alithya-oss/backstage-plugin-rag-ai-backend'))
+backend.add(import('@roadiehq/rag-ai-backend'))
+// backend.add(import('@alithya-oss/backstage-plugin-rag-ai-backend-module-openai'));
+backend.add(ragai)
+// backend.add(notificationsPlugin)
 backend.start();
 

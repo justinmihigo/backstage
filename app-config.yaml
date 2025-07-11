@@ -243,3 +243,33 @@ env:
     valueFrom:
       fieldRef:
         fieldPath: metadata.namespace
+ai:
+  #(Optional) Supported sources to query information from using RAG. This can be used to omit unnecessary sources from being retrievable. Defaults to [catalog]
+  supportedSources: ['catalog','techdocs','api']
+  prompts:
+    # (Optional) Prefix prompt to add to the query. This prompt is always succeeded by a text blob of embeddings retrieved by the RAG engine.
+    prefix: 'you are an LLM designed to do this and that... based on... Use the following documents to...'
+
+    # Suffix prompt to add to the query. This prompt is always succeeded by text query user has input.
+    suffix: 'Begin! \n Question: \n'
+  storage:
+    pgvector:
+      # (Optional) The size of the chunk to flush when storing embeddings to the DB. Defaults to 500
+      chunksize: 500
+
+  # Embeddings engine configuration options
+  embeddings:
+    # Generic embeddings options
+    # (Optional) The chunk size of an embedding. Determines how big or small the individual pieces of context stored alongside the vectors and sent to the LLM are. Defaults to 1000
+    chunkSize: 1000
+
+    # (Optional) The overlap between adjacent chunks of embeddings. The bigger the number, the more overlap. Defaults to 200
+    chunkOverlap: 200
+    concurrencyLimit: 10
+    openai:
+      # baseURL: 'https://generativelanguage.googleapis.com/v1beta/'
+      modelName: 'text-embedding-3-small'
+      batchSize: 512
+      embeddingsDimensions: 1536
+      # apiKey: 'AIzaSyBt9_oD7eeKd46xKOmetEjUZbYZLzmSNGU'
+      openAIApiKey: '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'
