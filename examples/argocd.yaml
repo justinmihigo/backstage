@@ -51,7 +51,7 @@ spec:
       name: Notify
       action: notification:send
       input:
-        recipients: entity
+        recipients: broadcast
         entityRefs:
           - component:default/backstage
         title: 'Template executed'

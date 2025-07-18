@@ -15,6 +15,7 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
     argocd/app-name: nginx-server-1
+    jira/project-key: LEARNJIRA
     prometheus.io/rule: 'sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="default"}[5m]))'
     prometheus.io/alert: all
     backstage.io/source-location: url:https://github.com/justinmihigo/backstage
@@ -44,6 +45,7 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
     backstage.io/techdocs-builder: local
+    jira/project-key: DEIB
 spec:
   owner: user:justinmihigo
   type: graphql

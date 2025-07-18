@@ -24,6 +24,8 @@ backend:
     # host: 127.0.0.1
   csp:
     connect-src: ["'self'", 'http:', 'https:']
+    img-src:
+      - ${JIRA_URL}
     # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
@@ -37,8 +39,8 @@ backend:
         paths:
           - /api/graphql/schema
       - host: 'github.com'
-        paths:
-          - /justinmihigo/test-k7es/tree/main/docs
+        paths: 
+          - "*"
   # This is for local development only, it is not recommended to use this in production
   # The production database configuration is stored in app-config.production.yaml
   database:
@@ -80,6 +82,18 @@ proxy:
       # secure: false
       # headers:
       #   Authorization: Basic ${PROMETHEUS_TOKEN}
+    '/jira/api':
+      target: https://mihigojustin.atlassian.net/
+      headers:
+        Authorization: ${JIRA_TOKEN_MINE}
+        Content-Type: 'application/json'
+        Accept: 'application/json'
+        X-Atlassian-Token: 'nocheck'
+        User-Agent: 'JIRA'
+    '/grafana/api':
+      target: http://localhost:3001
+      headers:
+        Authorization: Bearer ${GRAFANA_SA_TOKEN}
           
          
   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
@@ -121,7 +135,7 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Resource, Location, User, Group]
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
@@ -156,6 +170,8 @@ catalog:
       target: ../../examples/argocd.yaml
       rules:
         - allow: [Template]
+    - type: file 
+      target: ../../examples/org1.yaml
 
     ## Uncomment these lines to add more example data
     # - type: url
@@ -243,3 +259,36 @@ env:
     valueFrom:
       fieldRef:
         fieldPath: metadata.namespace
+ai:
+  #(Optional) Supported sources to query information from using RAG. This can be used to omit unnecessary sources from being retrievable. Defaults to [catalog]
+  supportedSources: ['catalog','techdocs','api']
+  prompts:
+    # (Optional) Prefix prompt to add to the query. This prompt is always succeeded by a text blob of embeddings retrieved by the RAG engine.
+    prefix: 'you are an LLM designed to do this and that... based on... Use the following documents to...'
+
+    # Suffix prompt to add to the query. This prompt is always succeeded by text query user has input.
+    suffix: 'Begin! \n Question: \n'
+  storage:
+    pgvector:
+      # (Optional) The size of the chunk to flush when storing embeddings to the DB. Defaults to 500
+      chunksize: 500
+
+  # Embeddings engine configuration options
+  embeddings:
+    # Generic embeddings options
+    # (Optional) The chunk size of an embedding. Determines how big or small the individual pieces of context stored alongside the vectors and sent to the LLM are. Defaults to 1000
+    chunkSize: 1000
+
+    # (Optional) The overlap between adjacent chunks of embeddings. The bigger the number, the more overlap. Defaults to 200
+    chunkOverlap: 200
+    concurrencyLimit: 10
+    openai:
+      # baseURL: 'https://generativelanguage.googleapis.com/v1beta/'
+      modelName: 'text-embedding-3-small'
+      batchSize: 512
+      embeddingsDimensions: 1536
+      # apiKey: 'AIzaSyBt9_oD7eeKd46xKOmetEjUZbYZLzmSNGU'
+      openAIApiKey: ${OPENAI_API_KEY}
+
+grafana: 
+  domain: ${GRAFANA_URL}

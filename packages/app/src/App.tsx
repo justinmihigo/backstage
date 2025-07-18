@@ -39,12 +39,24 @@ import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { TechRadarPage } from '@backstage-community/plugin-tech-radar';
 import { NotificationsPage, UserNotificationSettingsCard } from '@backstage/plugin-notifications'
 import { SignalsDisplay } from '@backstage/plugin-signals'
-
+import {RagModal} from '@roadiehq/rag-ai'
+import { UnifiedThemeProvider } from '@backstage/theme';
+import { myTheme } from './theme/myTheme';
+import LightIcon from '@material-ui/icons/WbSunny'
 // import { useApi } from '@backstage/core-plugin-api';
 // import { notificationsApiRef } from '@backstage/plugin-notifications';
 const app = createApp({
   featureFlags: [{ pluginId: 'kubernetes', name: 'kubernetes' }],
   apis,
+  themes: [{
+    id: 'my-theme',
+    title: 'My Custom Theme',
+    variant: 'light',
+    icon: <LightIcon />,
+    Provider: ({ children }:any) => (
+      <UnifiedThemeProvider theme={myTheme} children={children} />
+    ),
+  }],
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,
@@ -61,6 +73,7 @@ const app = createApp({
     bind(orgPlugin.externalRoutes, {
       catalogIndex: catalogPlugin.routes.catalogIndex,
     });
+    
 
   },
 
@@ -132,6 +145,7 @@ export default app.createRoot(
   <>
     <AlertDisplay />
     <SignalsDisplay />
+    <RagModal/>
     <OAuthRequestDialog />
     <AppRouter>
       <Root>{routes}</Root>

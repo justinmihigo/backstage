@@ -11,6 +11,7 @@ import {
   UserSettingsSignInAvatar,
 } from '@backstage/plugin-user-settings';
 import { SidebarSearchModal } from '@backstage/plugin-search';
+import {SidebarRagModal} from '@roadiehq/rag-ai';
 import {
   Sidebar,
   sidebarConfig,
@@ -89,7 +90,7 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
           titleCounterEnabled     // Enables counter in page title
           snackbarEnabled={true} // Disables snackbar notifications
         />
-
+        <SidebarRagModal/>
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>
