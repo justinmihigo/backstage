@@ -67,7 +67,8 @@ import {
   EntityPrometheusGraphCard,
   isPrometheusAvailable
 } from '@roadiehq/backstage-plugin-prometheus'
-
+import { EntityJiraOverviewCard, isJiraAvailable } from '@roadiehq/backstage-plugin-jira'
+import { EntityGrafanaDashboardsCard, isOverviewDashboardAvailable } from '@k-phoen/backstage-plugin-grafana'
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -161,14 +162,29 @@ const overviewContent = (
         <Grid item md={8}>
           <EntityPrometheusAlertCard />
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={8}>
           <EntityPrometheusGraphCard />
         </Grid>
       </EntitySwitch.Case>
     </EntitySwitch>
+    <EntitySwitch>
+      <EntitySwitch.Case if={isJiraAvailable}>
+        <Grid item md={8}>
+          <EntityJiraOverviewCard />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+    <EntitySwitch>
+      <EntitySwitch.Case if={isOverviewDashboardAvailable}>
+      <Grid item md={6}>
+        {/* Grafana alert card start */}
+        <EntityGrafanaDashboardsCard />
+        {/* Grafana alert card end */}
+      </Grid>
+    </EntitySwitch.Case>
+  </EntitySwitch>
+  </Grid >
 
-
-  </Grid>
 );
 
 const serviceEntityPage = (
@@ -188,7 +204,7 @@ const serviceEntityPage = (
     >
       <EntityKubernetesContent refreshIntervalMs={30000} />
     </EntityLayout.Route>
-     
+
     <EntityLayout.Route path="/prometheus" title="Prometheus">
       <EntityPrometheusContent />
     </EntityLayout.Route>

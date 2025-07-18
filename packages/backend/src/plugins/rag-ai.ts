@@ -5,7 +5,9 @@ import { createRoadiePgVectorStore } from '@alithya-oss/backstage-plugin-rag-ai-
 import { createDefaultRetrievalPipeline } from '@alithya-oss/backstage-plugin-rag-ai-backend-retrieval-augmenter'
 import { CatalogClient } from '@backstage/catalog-client'
 import { initializeOpenAiEmbeddings } from '@alithya-oss/backstage-plugin-rag-ai-backend-embeddings-openai'
-import { ChatOpenAI, OpenAI,  } from '@langchain/openai';
+import { ChatOpenAI  } from '@langchain/openai';
+// import { OpenAI  } from '@langchain/openai';
+
 // import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 
 export const ragai= createBackendModule(

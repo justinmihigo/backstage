@@ -8,9 +8,8 @@
 
 import { createBackend } from '@backstage/backend-defaults';
 import sendSlackMessageModule from "@mdude2314/backstage-plugin-scaffolder-backend-module-slack"
-
-import { notificationsPlugin } from './plugins/notifications';
 import { ragai } from './plugins/rag-ai';
+// import { notificationsPlugin } from './plugins/notifications';
 const backend = createBackend();
 
 backend.add(import('@backstage/plugin-app-backend'));

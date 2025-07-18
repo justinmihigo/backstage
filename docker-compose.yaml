@@ -1,6 +1,8 @@
 services:
   app:
-    image: justinmihigo/backstage:latest
+    image: justinmihigo/backstage:2.0.5
+    ports: 
+      - "7007:7007"
   database:
     image: postgres:latest
     environment:

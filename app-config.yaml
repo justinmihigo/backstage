@@ -24,6 +24,8 @@ backend:
     # host: 127.0.0.1
   csp:
     connect-src: ["'self'", 'http:', 'https:']
+    img-src:
+      - ${JIRA_URL}
     # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
@@ -37,8 +39,8 @@ backend:
         paths:
           - /api/graphql/schema
       - host: 'github.com'
-        paths:
-          - /justinmihigo/test-k7es/tree/main/docs
+        paths: 
+          - "*"
   # This is for local development only, it is not recommended to use this in production
   # The production database configuration is stored in app-config.production.yaml
   database:
@@ -80,6 +82,18 @@ proxy:
       # secure: false
       # headers:
       #   Authorization: Basic ${PROMETHEUS_TOKEN}
+    '/jira/api':
+      target: https://mihigojustin.atlassian.net/
+      headers:
+        Authorization: ${JIRA_TOKEN_MINE}
+        Content-Type: 'application/json'
+        Accept: 'application/json'
+        X-Atlassian-Token: 'nocheck'
+        User-Agent: 'JIRA'
+    '/grafana/api':
+      target: http://localhost:3001
+      headers:
+        Authorization: Bearer ${GRAFANA_SA_TOKEN}
           
          
   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
@@ -121,7 +135,7 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Resource, Location, User, Group]
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
@@ -156,6 +170,8 @@ catalog:
       target: ../../examples/argocd.yaml
       rules:
         - allow: [Template]
+    - type: file 
+      target: ../../examples/org1.yaml
 
     ## Uncomment these lines to add more example data
     # - type: url
@@ -271,3 +287,8 @@ ai:
       modelName: 'text-embedding-3-small'
       batchSize: 512
       embeddingsDimensions: 1536
+      # apiKey: 'AIzaSyBt9_oD7eeKd46xKOmetEjUZbYZLzmSNGU'
+      openAIApiKey: ${OPENAI_API_KEY}
+
+grafana: 
+  domain: ${GRAFANA_URL}

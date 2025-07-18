@@ -12,6 +12,11 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: example-website
+
+  annotations:
+    # jira/project-key: LEARNJIRA
+    # jira/token-type: Basic
+    grafana/dashboard-selector: "(tags @>'Kubernetes' || tags @> 'Prometheus')"
 spec:
   type: website
   lifecycle: experimental

@@ -53,6 +53,18 @@ proxy:
     '/prometheus/api':
       target: ${PROMETHEUS_URL_PROXY}
       credentials: dangerously-allow-unauthenticated
+    '/jira/api':
+      target: ${JIRA_URL}
+      headers:
+        Authorization: ${JIRA_TOKEN_MINE}
+        Content-Type: 'application/json'
+        Accept: 'application/json'
+        X-Atlassian-Token: 'nocheck'
+        User-Agent: 'JIRA'
+    '/grafana/api':
+      target: ${GRAFANA_URL}
+      headers:
+        Authorization: Bearer ${GRAFANA_SA_TOKEN}
 
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
@@ -81,6 +93,8 @@ backend:
       #     $file: <file-path>/ca/server.crt
   csp:
     connect-src: ["'self'", 'http:', 'https:']
+    img-src:
+      - ${JIRA_URL}
     # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
@@ -120,7 +134,7 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Resource, Location, User, Group]
   locations:
     # Local example data, replace this with your production config, these are intended for demo use only.
     # File locations are relative to the backend process, typically in a deployed context, such as in a Docker container, this will be the root
@@ -154,6 +168,10 @@ catalog:
       target: ./examples/template/template-deploy.yaml
       rules:
         - allow: [Template]
+    - type: file
+      target: ./examples/argocd.yaml
+      rules:
+        - allow: [Template]
 
   useUrlReadersSearch: true
 
@@ -184,3 +202,36 @@ argocd:
           secure: false
           url: ${ARGOCD_SERVER_URL}
           token: ${ARGOCD_AUTH_TOKEN}
+
+ai:
+  #(Optional) Supported sources to query information from using RAG. This can be used to omit unnecessary sources from being retrievable. Defaults to [catalog]
+  supportedSources: ['catalog','techdocs','api']
+  prompts:
+    # (Optional) Prefix prompt to add to the query. This prompt is always succeeded by a text blob of embeddings retrieved by the RAG engine.
+    prefix: 'you are an LLM designed to do this and that... based on... Use the following documents to...'
+
+    # Suffix prompt to add to the query. This prompt is always succeeded by text query user has input.
+    suffix: 'Begin! \n Question: \n'
+  storage:
+    pgvector:
+      # (Optional) The size of the chunk to flush when storing embeddings to the DB. Defaults to 500
+      chunksize: 500
+
+  # Embeddings engine configuration options
+  embeddings:
+    # Generic embeddings options
+    # (Optional) The chunk size of an embedding. Determines how big or small the individual pieces of context stored alongside the vectors and sent to the LLM are. Defaults to 1000
+    chunkSize: 1000
+
+    # (Optional) The overlap between adjacent chunks of embeddings. The bigger the number, the more overlap. Defaults to 200
+    chunkOverlap: 200
+    concurrencyLimit: 10
+    openai:
+      # baseURL: 'https://generativelanguage.googleapis.com/v1beta/'
+      modelName: 'text-embedding-3-small'
+      batchSize: 512
+      embeddingsDimensions: 1536
+      # apiKey: 'AIzaSyBt9_oD7eeKd46xKOmetEjUZbYZLzmSNGU'
+      openAIApiKey: ${OPENAI_API_KEY}
+grafana: 
+  domain: ${GRAFANA_URL}
