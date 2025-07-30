@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: deployment-template
   title: Kubernetes Deployment Template
-  description: Kubernetes template contains a base boiler plate that we need during deployment https://github.com/mclarke47/dice-roller/blob/master/catalog-info.yaml
+  description: Kubernetes template contains a base boiler plate that we need during deployment
 spec:
   owner: user:justinmihigo
   type: service
@@ -137,6 +137,17 @@ spec:
       action: slack:sendMessage:conversation
       input:
         message: The deployment template  for ${{parameters.deployName}} in ${{parameters.namespace}} namespace has been successfully executed and the component has been registered in the catalog.
+    - id: notify
+      name: Notify
+      action: notification:send
+      input:
+        recipients: broadcast
+        entityRefs:
+          - component:default/backstage
+        title: 'Template executed'
+        info: 'Your template has been executed'
+        severity: 'low'
+        link: https://backstage.io
   output:
     links:
       - title: Repository

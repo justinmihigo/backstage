@@ -9,6 +9,7 @@ metadata:
     'backstage.io/kubernetes-id': dice-roller
     'backstage.io/kubernetes-namespace': default
     'backstage.io/kubernetes-cluster': cluster.local
+    'rag-ai/index': 'true'
 spec:
   type: service
   lifecycle: production

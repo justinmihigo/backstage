@@ -90,6 +90,7 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
           titleCounterEnabled     // Enables counter in page title
           snackbarEnabled={true} // Disables snackbar notifications
         />
+        <SidebarItem icon={ExtensionIcon} to="newrelic" text="New Relic" />
         <SidebarRagModal/>
         {/* End global nav */}
         <SidebarDivider />

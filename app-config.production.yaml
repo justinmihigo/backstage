@@ -65,6 +65,17 @@ proxy:
       target: ${GRAFANA_URL}
       headers:
         Authorization: Bearer ${GRAFANA_SA_TOKEN}
+        
+    '/newrelic/apm/api':
+      target: https://api.eu.newrelic.com/v2/
+      headers:
+        X-Api-Key: ${NEW_RELIC_USER_KEY}
+      allowedHeaders:
+        - link
+    '/newrelic/api':
+      target: https://api.eu.newrelic.com
+      headers:
+        X-Api-Key: ${NEW_RELIC_USER_KEY}
 
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
@@ -76,7 +87,11 @@ backend:
   # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
   listen: ':7007'
-
+  auth:
+    # Used for enabling authentication, secret is shared by all backend plugins
+    # See https://backstage.io/docs/auth/service-to-service-auth for
+    # information on the format
+    dangerouslyDisableDefaultAuthPolicy: true
   # config options: https://node-postgres.com/apis/client
   database:
     client: pg

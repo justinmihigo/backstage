@@ -43,6 +43,7 @@ import {RagModal} from '@roadiehq/rag-ai'
 import { UnifiedThemeProvider } from '@backstage/theme';
 import { myTheme } from './theme/myTheme';
 import LightIcon from '@material-ui/icons/WbSunny'
+import {NewRelicPage} from '@backstage-community/plugin-newrelic'
 // import { useApi } from '@backstage/core-plugin-api';
 // import { notificationsApiRef } from '@backstage/plugin-notifications';
 const app = createApp({
@@ -134,9 +135,9 @@ const routes = (
     </Route>
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     <Route
-      path="/tech-radar"
-      element={<TechRadarPage width={1500} height={800} />}
+      path="/tech-radar" element={<TechRadarPage width={1500} height={800} />}
     />
+    <Route path="/newrelic" element={<NewRelicPage />} />
   </FlatRoutes>
 );
 

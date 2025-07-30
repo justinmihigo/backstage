@@ -69,8 +69,12 @@ import {
 } from '@roadiehq/backstage-plugin-prometheus'
 import { EntityJiraOverviewCard, isJiraAvailable } from '@roadiehq/backstage-plugin-jira'
 import { EntityGrafanaDashboardsCard, isOverviewDashboardAvailable } from '@k-phoen/backstage-plugin-grafana'
+import { 
+  isNewRelicDashboardAvailable, 
+  EntityNewRelicDashboardContent,
+  EntityNewRelicDashboardCard, } from '@backstage-community/plugin-newrelic-dashboard';
 const techdocsContent = (
-  <EntityTechdocsContent>
+  <EntityTechdocsContent> 
     <TechDocsAddons>
       <ReportIssue />
     </TechDocsAddons>
@@ -175,6 +179,13 @@ const overviewContent = (
       </EntitySwitch.Case>
     </EntitySwitch>
     <EntitySwitch>
+      <EntitySwitch.Case if={isNewRelicDashboardAvailable}>
+        <Grid item md={8} xs={12}>
+          <EntityNewRelicDashboardCard />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+    <EntitySwitch>
       <EntitySwitch.Case if={isOverviewDashboardAvailable}>
       <Grid item md={6}>
         {/* Grafana alert card start */}
@@ -233,6 +244,13 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/docs" title="Docs">
       {techdocsContent}
+    </EntityLayout.Route>
+    <EntityLayout.Route
+      if={isNewRelicDashboardAvailable}
+      path="/newrelic-dashboard"
+      title="New Relic Dashboard"
+    >
+      <EntityNewRelicDashboardContent />
     </EntityLayout.Route>
   </EntityLayout>
 );

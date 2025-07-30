@@ -1,5 +1,5 @@
 app:
-  title: Scaffolded Backstage App
+  title: Irembo Backstage App
   baseUrl: http://localhost:3000
   extensions:
   - entity-content:kubernetes/kubernetes:
@@ -8,13 +8,14 @@ app:
 
 
 organization:
-  name: My Company
+  name: Irembo
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
   # See https://backstage.io/docs/auth/service-to-service-auth for
   # information on the format
-  # auth:
+  auth:
+    dangerouslyDisableDefaultAuthPolicy: true
   #   keys:
   #     - secret: ${BACKEND_SECRET}
   baseUrl: http://localhost:7007
@@ -94,8 +95,19 @@ proxy:
       target: http://localhost:3001
       headers:
         Authorization: Bearer ${GRAFANA_SA_TOKEN}
-          
-         
+
+    '/newrelic/apm/api':
+      target: https://api.eu.newrelic.com/v2/
+      headers:
+        X-Api-Key: ${NEW_RELIC_USER_KEY}
+      allowedHeaders:
+        - link
+    '/newrelic/api':
+      target: https://api.eu.newrelic.com
+      headers:
+        X-Api-Key: ${NEW_RELIC_USER_KEY}
+      
+
   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
   # endpoints:
   #   '/test':
@@ -154,8 +166,8 @@ catalog:
       target: ../../examples/template/template.yaml
       rules:
         - allow: [Template]
-    - type: url
-      target: https://github.com/mclarke47/dice-roller/blob/master/catalog-info.yaml
+    # - type: url
+    #   target: https://github.com/mclarke47/dice-roller/blob/master/catalog-info.yaml
         
     - type: file
       target: ../../examples/org.yaml
@@ -254,14 +266,10 @@ argocd:
 #     - name: prometheus
 #       proxyPath: /prometheus/api
 #       uiUrl: 'http://localhost:9090'
-env:
-  - name: ${POD_NAMESPACE}
-    valueFrom:
-      fieldRef:
-        fieldPath: metadata.namespace
+
 ai:
   #(Optional) Supported sources to query information from using RAG. This can be used to omit unnecessary sources from being retrievable. Defaults to [catalog]
-  supportedSources: ['catalog','techdocs','api']
+  supportedSources: ['catalog','tech-docs','api']
   prompts:
     # (Optional) Prefix prompt to add to the query. This prompt is always succeeded by a text blob of embeddings retrieved by the RAG engine.
     prefix: 'you are an LLM designed to do this and that... based on... Use the following documents to...'
@@ -289,6 +297,11 @@ ai:
       embeddingsDimensions: 1536
       # apiKey: 'AIzaSyBt9_oD7eeKd46xKOmetEjUZbYZLzmSNGU'
       openAIApiKey: ${OPENAI_API_KEY}
+
+ragAi:
+  index:
+    enabled: true
+    schedule: "0 * * * *"
 
 grafana: 
   domain: ${GRAFANA_URL}

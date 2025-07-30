@@ -2910,6 +2910,51 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage-community/plugin-newrelic-dashboard@npm:^0.11.1":
+  version: 0.11.1
+  resolution: "@backstage-community/plugin-newrelic-dashboard@npm:0.11.1"
+  dependencies:
+    "@backstage/catalog-model": "npm:^1.7.4"
+    "@backstage/core-compat-api": "npm:^0.4.3"
+    "@backstage/core-components": "npm:^0.17.3"
+    "@backstage/core-plugin-api": "npm:^1.10.8"
+    "@backstage/errors": "npm:^1.2.7"
+    "@backstage/frontend-plugin-api": "npm:^0.10.3"
+    "@backstage/plugin-catalog-react": "npm:^1.19.0"
+    "@material-ui/core": "npm:^4.12.2"
+    "@material-ui/icons": "npm:^4.9.1"
+    "@types/react": "npm:^16.13.1 || ^17.0.0 || ^18.0.0"
+    react-use: "npm:^17.2.4"
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-router-dom: 6.0.0-beta.0 || ^6.3.0
+  checksum: 10c0/743b34e26c85e7d3586bfa986a2c62835b008fbd5db1a24dc699b35b73aa390ae80e42904515d5c4b90ae2ce6f5575f9b21fbe0b09c16dc9aa4afe3d6c1b68bf
+  languageName: node
+  linkType: hard
+
+"@backstage-community/plugin-newrelic@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "@backstage-community/plugin-newrelic@npm:0.11.0"
+  dependencies:
+    "@backstage/core-compat-api": "npm:^0.4.3"
+    "@backstage/core-components": "npm:^0.17.3"
+    "@backstage/core-plugin-api": "npm:^1.10.8"
+    "@backstage/frontend-plugin-api": "npm:^0.10.3"
+    "@material-ui/core": "npm:^4.12.2"
+    "@material-ui/icons": "npm:^4.9.1"
+    "@material-ui/lab": "npm:4.0.0-alpha.61"
+    "@types/react": "npm:^16.13.1 || ^17.0.0 || ^18.0.0"
+    parse-link-header: "npm:^2.0.0"
+    react-use: "npm:^17.2.4"
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-router-dom: 6.0.0-beta.0 || ^6.3.0
+  checksum: 10c0/a4e09c4853e54cb05063674322d4a7f9b58d417f85c85c2ed7e5643fe857ad4b1904cee53eff2dc11b7db759681434e1f0d33364567400c1be175ac0bcc51adb
+  languageName: node
+  linkType: hard
+
 "@backstage-community/plugin-tech-radar-common@npm:^1.6.0":
   version: 1.6.0
   resolution: "@backstage-community/plugin-tech-radar-common@npm:1.6.0"
@@ -18375,6 +18420,8 @@ __metadata:
   resolution: "app@workspace:packages/app"
   dependencies:
     "@backstage-community/plugin-github-actions": "npm:^0.11.1"
+    "@backstage-community/plugin-newrelic": "npm:^0.11.0"
+    "@backstage-community/plugin-newrelic-dashboard": "npm:^0.11.1"
     "@backstage-community/plugin-tech-radar": "npm:^1.7.0"
     "@backstage/app-defaults": "npm:^1.6.2"
     "@backstage/canon": "npm:^0.4.0"
@@ -31569,6 +31616,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"parse-link-header@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "parse-link-header@npm:2.0.0"
+  dependencies:
+    xtend: "npm:~4.0.1"
+  checksum: 10c0/7771922c4faeda9a00261cad3be5f25d4c2f940e21300c8f5ddf3b012d1a7bd82625cd08b926ff826905b9cb1e03056f222b550a4ba7d9e19404ad51fe52f68d
+  languageName: node
+  linkType: hard
+
 "parse-multipart-data@npm:^1.4.0":
   version: 1.5.0
   resolution: "parse-multipart-data@npm:1.5.0"
@@ -38654,7 +38710,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xtend@npm:^4.0.0, xtend@npm:^4.0.2":
+"xtend@npm:^4.0.0, xtend@npm:^4.0.2, xtend@npm:~4.0.1":
   version: 4.0.2
   resolution: "xtend@npm:4.0.2"
   checksum: 10c0/366ae4783eec6100f8a02dff02ac907bf29f9a00b82ac0264b4d8b832ead18306797e283cf19de776538babfdcb2101375ec5646b59f08c52128ac4ab812ed0e
