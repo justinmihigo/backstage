@@ -57,7 +57,7 @@ spec:
           title: Image Pull Policy
           type: string
           description: Image policy
-          default: always 
+          default: Always 
           enum:
             - Always
             - IfNotPresent

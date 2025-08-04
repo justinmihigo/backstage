@@ -29,6 +29,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { MyGroupsSidebarItem } from '@backstage/plugin-org';
 import GroupIcon from '@material-ui/icons/People';
 import RadarIcon from '@material-ui/icons/TrackChanges';
+import Explore from '@material-ui/icons/Explore';
 // import { Notifications } from '@material-ui/icons'
 import { NotificationsSidebarItem } from '@backstage/plugin-notifications';
 const useSidebarLogoStyles = makeStyles({
@@ -91,7 +92,8 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
           snackbarEnabled={true} // Disables snackbar notifications
         />
         <SidebarItem icon={ExtensionIcon} to="newrelic" text="New Relic" />
-        <SidebarRagModal/>
+        <SidebarItem icon={Explore} to="kro" text="KRO" />
+        <SidebarRagModal  />
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>

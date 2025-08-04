@@ -97,15 +97,22 @@ proxy:
         Authorization: Bearer ${GRAFANA_SA_TOKEN}
 
     '/newrelic/apm/api':
-      target: https://api.eu.newrelic.com/v2/
+      target: ${NEW_RELIC_URL_APM}
       headers:
         X-Api-Key: ${NEW_RELIC_USER_KEY}
       allowedHeaders:
         - link
     '/newrelic/api':
-      target: https://api.eu.newrelic.com
+      target: ${NEW_RELIC_URL}
       headers:
         X-Api-Key: ${NEW_RELIC_USER_KEY}
+    '/pulumi':
+      target: 'https://api.pulumi.com/api'
+      changeOrigin: true
+      headers:
+        Authorization: token ${PULUMI_ACCESS_TOKEN}
+        Accept: application/vnd.pulumi+8
+        Content-Type: application/json
       
 
   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
@@ -143,6 +150,15 @@ auth:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
+  providers:
+    pulumi:
+      default:
+        api: https://api.pulumi.com
+        organization: justinmihigo
+        pulumiAccessToken: ${PULUMI_ACCESS_TOKEN}
+        schedule:
+          frequency: PT10M
+          timeout: PT50M
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration

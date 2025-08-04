@@ -61,6 +61,8 @@
     "@opentelemetry/exporter-prometheus": "^0.202.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.202.0",
     "@opentelemetry/sdk-node": "^0.202.0",
+    "@pulumi/backstage-scaffolder-backend-pulumi": "^0.18.0",
+    "@pulumi/plugin-catalog-backend-module-pulumi": "^0.18.0",
     "@roadiehq/backstage-plugin-argo-cd-backend": "^4.3.1",
     "@roadiehq/rag-ai-backend": "^2.0.1",
     "@roadiehq/rag-ai-backend-embeddings-openai": "^0.5.1",

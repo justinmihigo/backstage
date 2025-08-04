@@ -69,12 +69,27 @@ import {
 } from '@roadiehq/backstage-plugin-prometheus'
 import { EntityJiraOverviewCard, isJiraAvailable } from '@roadiehq/backstage-plugin-jira'
 import { EntityGrafanaDashboardsCard, isOverviewDashboardAvailable } from '@k-phoen/backstage-plugin-grafana'
-import { 
-  isNewRelicDashboardAvailable, 
+import {
+  isNewRelicDashboardAvailable,
   EntityNewRelicDashboardContent,
-  EntityNewRelicDashboardCard, } from '@backstage-community/plugin-newrelic-dashboard';
+  EntityNewRelicDashboardCard,
+} from '@backstage-community/plugin-newrelic-dashboard';
+import {
+  isPulumiAvailable,
+  EntityPulumiCard,
+  EntityPulumiMetdataCard,
+  PulumiComponent
+} from '@pulumi/backstage-plugin-pulumi';
+
+const pulumiContent = (
+  <EntitySwitch>
+    <EntitySwitch.Case if={isPulumiAvailable}>
+      <PulumiComponent />
+    </EntitySwitch.Case>
+  </EntitySwitch>
+);
 const techdocsContent = (
-  <EntityTechdocsContent> 
+  <EntityTechdocsContent>
     <TechDocsAddons>
       <ReportIssue />
     </TechDocsAddons>
@@ -187,13 +202,20 @@ const overviewContent = (
     </EntitySwitch>
     <EntitySwitch>
       <EntitySwitch.Case if={isOverviewDashboardAvailable}>
-      <Grid item md={6}>
-        {/* Grafana alert card start */}
-        <EntityGrafanaDashboardsCard />
-        {/* Grafana alert card end */}
-      </Grid>
-    </EntitySwitch.Case>
-  </EntitySwitch>
+        <Grid item md={6}>
+          {/* Grafana alert card start */}
+          <EntityGrafanaDashboardsCard />
+          {/* Grafana alert card end */}
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+    <EntitySwitch>
+      <EntitySwitch.Case if={isPulumiAvailable}>
+        <Grid item md={6}>
+          <EntityPulumiCard/>
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
   </Grid >
 
 );
@@ -251,6 +273,9 @@ const serviceEntityPage = (
       title="New Relic Dashboard"
     >
       <EntityNewRelicDashboardContent />
+    </EntityLayout.Route>
+    <EntityLayout.Route path="/pulumi" title="Pulumi" if={isPulumiAvailable}>
+      {pulumiContent}
     </EntityLayout.Route>
   </EntityLayout>
 );
@@ -443,6 +468,13 @@ const systemPage = (
         unidirectional={false}
       />
     </EntityLayout.Route>
+    <EntitySwitch>
+      <EntitySwitch.Case if={isPulumiAvailable}>
+        <Grid item md={6}>
+          <EntityPulumiMetdataCard />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
   </EntityLayout>
 );
 

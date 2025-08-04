@@ -75,6 +75,8 @@ backend.add(import('@internal/plugin-scaffolder-backend-module-argocd'));
 backend.add(import('@roadiehq/rag-ai-backend'))
 // backend.add(import('@alithya-oss/backstage-plugin-rag-ai-backend-module-openai'));
 backend.add(ragai)
-// backend.add(notificationsPlugin)
+// pulumi
+backend.add(import('@pulumi/backstage-scaffolder-backend-pulumi'));
+backend.add(import('@pulumi/plugin-catalog-backend-module-pulumi/alpha'));
 backend.start();
 

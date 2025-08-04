@@ -15,6 +15,7 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
     argocd/app-name: nginx-server-1
+    pulumi.com/project-slug: justinmihigo/pulumi-local/kubernetes-ts
     jira/project-key: LEARNJIRA
     newrelic.com/dashboard-guid: Njk0MDU5NHxWSVp8REFTSEJPQVJEfGRhOjI1MzgxMjY
     prometheus.io/rule: 'sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="default"}[5m]))'
