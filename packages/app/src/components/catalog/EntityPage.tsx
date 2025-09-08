@@ -81,6 +81,10 @@ import {
   PulumiComponent
 } from '@pulumi/backstage-plugin-pulumi';
 
+import { EntitySonarQubeCard } from '@backstage-community/plugin-sonarqube';
+import { isSonarQubeAvailable } from '@backstage-community/plugin-sonarqube-react';
+import { SonarQubeRelatedEntitiesOverview } from '@backstage-community/plugin-sonarqube'
+
 const pulumiContent = (
   <EntitySwitch>
     <EntitySwitch.Case if={isPulumiAvailable}>
@@ -170,6 +174,7 @@ const overviewContent = (
         </Grid>
       </EntitySwitch.Case>
     </EntitySwitch>
+
     <Grid item md={4} xs={12}>
       <EntityLinksCard />
     </Grid>
@@ -212,11 +217,18 @@ const overviewContent = (
     <EntitySwitch>
       <EntitySwitch.Case if={isPulumiAvailable}>
         <Grid item md={6}>
-          <EntityPulumiCard/>
+          <EntityPulumiCard />
         </Grid>
       </EntitySwitch.Case>
     </EntitySwitch>
-  </Grid >
+    <EntitySwitch>
+      <EntitySwitch.Case if={isSonarQubeAvailable}>
+        <Grid item md={6}>
+          <EntitySonarQubeCard variant="gridItem" />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+  </Grid>
 
 );
 
@@ -447,6 +459,9 @@ const systemPage = (
         <Grid item md={6}>
           <EntityHasResourcesCard variant="gridItem" />
         </Grid>
+        <EntityLayout.Route path="/sonarqube" title="Code Quality">
+          <SonarQubeRelatedEntitiesOverview relationType={RELATION_HAS_PART} entityKind="component" />
+        </EntityLayout.Route>
       </Grid>
     </EntityLayout.Route>
     <EntityLayout.Route path="/diagram" title="Diagram">

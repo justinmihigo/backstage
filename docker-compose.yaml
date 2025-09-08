@@ -36,6 +36,7 @@ services:
       NEW_RELIC_USER_KEY: ${NEW_RELIC_USER_KEY}
       NEW_RELIC_URL: https://api.eu.newrelic.com
       NEW_RELIC_URL_APM: https://api.eu.newrelic.com/v2/
+      PULUMI_ACCESS_TOKEN: ${PULUMI_ACCESS_TOKEN}
     depends_on:
       - database
     ports:

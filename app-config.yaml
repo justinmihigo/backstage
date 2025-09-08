@@ -1,6 +1,11 @@
 app:
   title: Irembo Backstage App
   baseUrl: http://localhost:3000
+  # certificate:
+  #   cert: 
+  #     $file: ./cert/localhost.pem
+  #   key:
+  #     $file: ./cert/localhost-key.pem
   extensions:
   - entity-content:kubernetes/kubernetes:
       config:
@@ -19,8 +24,15 @@ backend:
   #   keys:
   #     - secret: ${BACKEND_SECRET}
   baseUrl: http://localhost:7007
+  # https:
+  #   certificate:
+  #     cert: 
+  #       $file: ./cert/localhost.pem
+  #     key:
+  #       $file: ./cert/localhost-key.pem
   listen:
     port: 7007
+  
     # Uncomment the following host directive to bind to specific interfaces
     # host: 127.0.0.1
   csp:
@@ -65,7 +77,11 @@ integrations:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
-
+  ansible-controller:
+    - name: my-controller
+      url: http://localhost:9090
+      username: admin
+      password: ${AWX_PASSWORD}
 proxy:
   endpoints:
     '/argocd/api':
@@ -163,7 +179,7 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location, User, Group]
+    - allow: [Component, System, API, Resource, Location, User, Group, Template]
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
@@ -198,8 +214,19 @@ catalog:
       target: ../../examples/argocd.yaml
       rules:
         - allow: [Template]
+
     - type: file 
       target: ../../examples/org1.yaml
+
+    - type: file 
+      target: ../../examples/pulumi.yaml
+      rules:
+        - allow: [Template]
+    - type: file
+      target: ../../examples/ansible/template.yaml
+      rules:
+        - allow: [Template]
+
 
     ## Uncomment these lines to add more example data
     # - type: url
@@ -213,6 +240,17 @@ catalog:
   # Experimental: Always use the search method in UrlReaderProcessor.
   # New adopters are encouraged to enable it as this behavior will be the default in a future release.
   useUrlReadersSearch: true
+search:
+  elasticsearch:
+    queryOptions:
+      fuzziness: AUTO
+      prefixLength: 3
+    provider: opensearch
+    node: http://localhost:9200
+    auth:
+      username: admin
+      password: Opensearch@1
+      # password: +_8r#wliY3Pv5-HMIf4qzXImYzZf-M=M
 
 kubernetes:
   frontend:
@@ -321,3 +359,8 @@ ragAi:
 
 grafana: 
   domain: ${GRAFANA_URL}
+
+sonarqube:
+  baseUrl: https://sonarcloud.io
+  apiKey: ${SONARCLOUD_TOKEN}
+  instanceKey: justinmihigo

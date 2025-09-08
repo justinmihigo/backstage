@@ -1,0 +1,55 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: kubernetes-template
+  title: Kubernetes Cluster
+  description: A template for creating a new Kubernetes Cluster using Pulumi.
+  tags:
+    - pulumi
+    - kubernetes
+spec:
+  owner: justinmihigo
+  type: service
+  parameters:
+    - title: Fill in some steps
+      required:
+        - component_id
+        - stack
+      properties:
+        component_id:
+          title: Component ID
+          type: string
+          description: Unique name of the component
+          ui:autofocus: true
+        stack:
+          title: Pulumi Stack
+          type: string
+          description: Pulumi stack name (e.g., dev, staging, prod)
+
+    - title: Choose a repository
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: pulumi-deploy-infrastructure
+      name: Deploy the infrastructure using Pulumi CLI
+      action: pulumi:up
+      input:
+        deployment: false
+        name: "${{ parameters.component_id }}-infrastructure"
+        repoUrl: ${{ parameters.repoUrl }}
+        repoProjectPath: .
+        organization: justinmihigo
+        stack: ${{ parameters.stack }}
+
+  output:
+    kubeconfig: ${{ steps.pulumi-deploy-infrastructure.output.kubeconfig }}
+    clusterId: ${{ steps.pulumi-deploy-infrastructure.output.ClusterId }}

@@ -60,6 +60,7 @@
     "@types/nodemailer": "^6.4.17",
     "better-sqlite3": "^11.10.0",
     "dotenv-cli": "^8.0.0",
-    "nodemailer": "^7.0.5"
+    "nodemailer": "^7.0.5",
+    "plugin-cloudify": "^1.0.0"
   }
 }

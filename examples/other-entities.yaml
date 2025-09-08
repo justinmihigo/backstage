@@ -20,6 +20,7 @@ metadata:
     newrelic.com/dashboard-guid: Njk0MDU5NHxWSVp8REFTSEJPQVJEfGRhOjI1MzgxMjY
     prometheus.io/rule: 'sum by (pod) (rate(container_cpu_usage_seconds_total{namespace="default"}[5m]))'
     prometheus.io/alert: all
+    sonarqube.org/project-key: justinmihigo_leave-management-be
     backstage.io/source-location: url:https://github.com/justinmihigo/backstage
     backstage.io/managed-by-location: url:https://github.com/justinmihigo/backstage
     github.com/project-slug: justinmihigo/backstage

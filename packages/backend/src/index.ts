@@ -46,7 +46,7 @@ backend.add(import('@backstage/plugin-search-backend'));
 
 // search engine
 // See https://backstage.io/docs/features/search/search-engines
-backend.add(import('@backstage/plugin-search-backend-module-pg'));
+// backend.add(import('@backstage/plugin-search-backend-module-pg'));
 
 // search collators
 backend.add(import('@backstage/plugin-search-backend-module-catalog'));
@@ -78,5 +78,8 @@ backend.add(ragai)
 // pulumi
 backend.add(import('@pulumi/backstage-scaffolder-backend-pulumi'));
 backend.add(import('@pulumi/plugin-catalog-backend-module-pulumi/alpha'));
+backend.add(import('@backstage/plugin-search-backend-module-elasticsearch'));
+backend.add(import('@backstage-community/plugin-sonarqube-backend'));
+backend.add(import ('@mycloudlab/scaffolder-backend-module-ansible-controller'));
 backend.start();
 
