@@ -210,11 +210,11 @@ catalog:
       rules:
         - allow: [Template]
     - type: file
-      target: ../../examples/pulumi.yaml
+      target: ./examples/pulumi.yaml
       rules:
         - allow: [Template]
     - type: file
-      target: ../../examples/ansible/template.yaml
+      target: ./examples/ansible/template.yaml
       rules:
         - allow: [Template]
 
