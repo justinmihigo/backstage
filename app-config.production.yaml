@@ -8,7 +8,7 @@ app:
         filter: kind:component,api,resource,system
 
 organization:
-  name: My Backstage
+  name: Irembo
 
 kubernetes:
   frontend:
@@ -39,6 +39,12 @@ integrations:
       # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
       # about setting up the GitHub integration here: https://backstage.io/docs/integrations/github/locations#configuration
       token: ${GITHUB_TOKEN}
+        
+  ansible-controller:
+    - name: my-controller
+      url: ${AWX_URL}
+      username: ${AWX_USER}
+      password: ${AWX_PASSWORD}
 
 proxy:
   endpoints:
@@ -203,6 +209,14 @@ catalog:
       target: ./examples/argocd.yaml
       rules:
         - allow: [Template]
+    - type: file
+      target: ../../examples/pulumi.yaml
+      rules:
+        - allow: [Template]
+    - type: file
+      target: ../../examples/ansible/template.yaml
+      rules:
+        - allow: [Template]
 
   useUrlReadersSearch: true
 
@@ -266,3 +280,9 @@ ai:
       openAIApiKey: ${OPENAI_API_KEY}
 grafana: 
   domain: ${GRAFANA_URL}
+
+sonarqube:
+  baseUrl: https://sonarcloud.io
+  apiKey: ${SONARCLOUD_TOKEN}
+  instanceKey: justinmihigo
+

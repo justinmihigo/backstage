@@ -79,8 +79,8 @@ integrations:
     #   token: ${GHE_TOKEN}
   ansible-controller:
     - name: my-controller
-      url: http://localhost:9090
-      username: admin
+      url: ${AWX_URL}
+      username: ${AWX_USER}
       password: ${AWX_PASSWORD}
 proxy:
   endpoints:
@@ -108,7 +108,7 @@ proxy:
         X-Atlassian-Token: 'nocheck'
         User-Agent: 'JIRA'
     '/grafana/api':
-      target: http://localhost:3001
+      target: ${GRAFANA_URL}
       headers:
         Authorization: Bearer ${GRAFANA_SA_TOKEN}
 
@@ -246,10 +246,10 @@ search:
       fuzziness: AUTO
       prefixLength: 3
     provider: opensearch
-    node: http://localhost:9200
+    node: ${OPENSEARCH_URL}
     auth:
-      username: admin
-      password: Opensearch@1
+      username: ${OPENSEARCH_USER}
+      password: ${OPENSEARCH_PASS}
       # password: +_8r#wliY3Pv5-HMIf4qzXImYzZf-M=M
 
 kubernetes:
